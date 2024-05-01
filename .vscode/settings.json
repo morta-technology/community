@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "explorer.sortOrder": "type",
+    "files.trimFinalNewlines": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file"
+    }
+}
