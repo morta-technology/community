@@ -5,7 +5,7 @@ it will be ignored by github, so do not worry about changing it
 """
 
 # import packages
-import morta.morta_api as ma
+import morta.api as ma
 
 # global variables
 # paste your API Morta Key here between the double quotations
