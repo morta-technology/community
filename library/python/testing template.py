@@ -39,6 +39,25 @@ def main():
     print(document)
     # -------------------------
 
+    """
+    The next piece of code gets all hubs, and within each hub, gets the documents and tables within the hub
+    """
+    hubs = ma.get_projects(api_key=API_KEY)
+
+    # loop over hubs
+    for hub in hubs:
+        # get documents in hub
+        documents = ma.get_documents(project_id=hub["publicId"], api_key=API_KEY)
+
+        # get tables in hub
+        tables = ma.get_tables(project_id=hub["publicId"], api_key=API_KEY)
+
+        # loop over tables and get rows
+        for table in tables:
+            # get the columns in a table
+            columns = table["columns"]
+            # get table rows
+            rows = ma.get_table(table_id=table["publicId"], api_key=API_KEY)
     # The end !
     print("----\ndone\n----")
 
