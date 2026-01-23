@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client S Root Cause Flow - 4-Level Sankey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #04005c;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #666;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .legend {
+            background: white;
+            border: 1px solid #e0e7f4;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #04005c;
+            margin-bottom: 16px;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .legend-section {
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 6px;
+        }
+
+        .legend-section h3 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid #e0e7f4;
+            border-radius: 8px;
+            padding: 24px;
+            min-height: 700px;
+            position: relative;
+        }
+
+        .column-headers {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px 20px 20px;
+            position: relative;
+        }
+
+        .column-header-wrapper {
+            text-align: center;
+        }
+
+        .column-header-wrapper:nth-child(1) {
+            width: 10%;
+            text-align: left;
+        }
+
+        .column-header-wrapper:nth-child(2) {
+            width: 30%;
+        }
+
+        .column-header-wrapper:nth-child(3) {
+            width: 25%;
+        }
+
+        .column-header-wrapper:nth-child(4) {
+            width: 15%;
+            text-align: right;
+        }
+
+        .column-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #04005c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .column-subtitle {
+            font-size: 11px;
+            color: #666;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .insight-box {
+            background: white;
+            border: 1px solid #e0e7f4;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .insight-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #04005c;
+            margin-bottom: 16px;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .insight-card {
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 6px;
+        }
+
+        .insight-number {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .insight-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .color-project { color: #94a3b8; }
+        .color-a { color: #4b70f6; }
+        .color-b { color: #d82455; }
+        .color-c { color: #febe00; }
+        .color-d { color: #04005c; }
+        .color-e { color: #8b5cf6; }
+        .color-f { color: #10b981; }
+        .color-direct { color: #065f46; }
+        .color-indirect { color: #92400e; }
+        .color-unrelated { color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Client S Root Cause Flow Analysis</h1>
+            <p class="subtitle">From project issues → emergent themes → underlying root causes → Morta addressability</p>
+        </header>
+
+        <div class="legend">
+            <div class="legend-title">Four-Level Flow Structure (Hover over any dimension to highlight its upstream paths)</div>
+            <div class="legend-grid">
+                <div class="legend-section">
+                    <h3>Level 1: Projects</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #94a3b8;"></div>
+                        <span>Three projects: FH, E, V</span>
+                    </div>
+                </div>
+
+                <div class="legend-section">
+                    <h3>Level 2: Emergent Themes</h3>
+                    <div style="font-size: 12px; color: #666;">21 categories from Mar 2025 RCA across procurement, design, governance, operations</div>
+                </div>
+
+                <div class="legend-section">
+                    <h3>Level 3: Underlying Root Causes</h3>
+                    <div style="font-size: 11px; color: #666; margin-bottom: 8px; font-style: italic;">Preliminary analysis carried out by Morta and Value from Data & AI</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4b70f6;"></div>
+                        <span><strong>A:</strong> Information Fragmentation</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #d82455;"></div>
+                        <span><strong>B:</strong> Siloed Work</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #febe00;"></div>
+                        <span><strong>C:</strong> Reactive Management</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #04005c;"></div>
+                        <span><strong>D:</strong> Missing Guardrails</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #8b5cf6;"></div>
+                        <span><strong>E:</strong> Knowledge Not Captured</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #10b981;"></div>
+                        <span><strong>F:</strong> Capacity Constraints</span>
+                    </div>
+                </div>
+
+                <div class="legend-section">
+                    <h3>Level 4: Morta Addressability</h3>
+                    <div style="font-size: 11px; color: #666; margin-bottom: 8px;">Assessment of whether Morta's platform capabilities can resolve each root cause</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #d1fae5;"></div>
+                        <span><strong>Direct:</strong> Morta + Process</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fef3c7;"></div>
+                        <span><strong>Indirect:</strong> Org Change + Support</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f1f5f9;"></div>
+                        <span><strong>Unrelated:</strong> Outside Scope</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="column-headers">
+                <div class="column-header-wrapper">
+                    <div class="column-header">Project</div>
+                </div>
+                <div class="column-header-wrapper">
+                    <div class="column-header">Emergent Themes</div>
+                    <div class="column-subtitle">based on Mar 2025 root cause analysis</div>
+                </div>
+                <div class="column-header-wrapper">
+                    <div class="column-header">Underlying Root Causes</div>
+                    <div class="column-subtitle">based on Dec 2025 deep-dive analysis</div>
+                </div>
+                <div class="column-header-wrapper">
+                    <div class="column-header">Addressability</div>
+                    <div class="column-subtitle">Whether the root cause can be directly or<br>indirectly addressed by Morta platform</div>
+                </div>
+            </div>
+            <div id="sankey"></div>
+        </div>
+
+        <div class="insight-box">
+            <div class="insight-title">Key Insights Across All Three Projects</div>
+            <div class="insight-grid">
+                <div class="insight-card">
+                    <div class="insight-number color-d">50</div>
+                    <div class="insight-label">Issues map to <strong>Missing Guardrails (D)</strong> - the single biggest lever</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-number color-direct">55%</div>
+                    <div class="insight-label">Of all issues are <strong>Directly addressable</strong> by Morta + process change</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-number color-project">76</div>
+                    <div class="insight-label"><strong>Total issues</strong> mapped across 3 projects (28 from FH, 29 from E, 19 from V)</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-number color-unrelated">16%</div>
+                    <div class="insight-label">Issues are <strong>Unrelated</strong> - honest assessment strengthens credibility</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+        function initializeSankey() {
+            if (typeof Plotly === 'undefined') {
+                console.error('Plotly loading... retrying');
+                setTimeout(initializeSankey, 100);
+                return;
+            }
+
+            const sankeyData = {
+  "nodes": [
+    "FH",
+    "E",
+    "V",
+    "Business Assurance & Quality Assurance",
+    "Client Selectivity, Team & Contextual Factors",
+    "Cultural & Behavioural Challenges",
+    "Design",
+    "Design and Life Safety Issues",
+    "Electrical & Mechanical Scope Issues",
+    "Financial & Resource Mismanagement",
+    "Financial Management and Commercial Leverage",
+    "Knowledge Management & Continuity",
+    "Legal & Contractual Challenges",
+    "Operational Factors",
+    "Operational Strain & Resource Allocation",
+    "Overtrading & Client Selection",
+    "Procurement",
+    "Procurement Issues",
+    "Project Planning & Commercial Management",
+    "Sequencing Issues",
+    "Supervision & Operational Issues",
+    "Supply Chain & Procurement Issues",
+    "Tender Process & Governance",
+    "Tender Process & Project Scope",
+    "A: Information Fragmentation",
+    "B: Siloed Work",
+    "C: Reactive Management",
+    "D: Missing Guardrails",
+    "E: Knowledge Not Captured",
+    "F: Capacity Constraints",
+    "None",
+    "Direct",
+    "Indirect",
+    "Unrelated"
+  ],
+  "links": {
+    "source": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      4,
+      4,
+      4,
+      4,
+      4,
+      22,
+      22,
+      22,
+      16,
+      16,
+      16,
+      16,
+      6,
+      6,
+      6,
+      13,
+      13,
+      13,
+      13,
+      13,
+      18,
+      18,
+      18,
+      18,
+      18,
+      4,
+      22,
+      20,
+      20,
+      20,
+      11,
+      11,
+      11,
+      17,
+      17,
+      17,
+      17,
+      7,
+      7,
+      7,
+      19,
+      19,
+      19,
+      8,
+      8,
+      8,
+      10,
+      10,
+      15,
+      15,
+      23,
+      9,
+      9,
+      9,
+      21,
+      21,
+      21,
+      21,
+      5,
+      14,
+      14,
+      14,
+      3,
+      3,
+      12,
+      29,
+      26,
+      27,
+      27,
+      25,
+      24,
+      26,
+      28,
+      28,
+      30,
+      24,
+      29,
+      30
+    ],
+    "target": [
+      4,
+      22,
+      16,
+      6,
+      13,
+      18,
+      4,
+      22,
+      20,
+      11,
+      17,
+      7,
+      19,
+      8,
+      10,
+      15,
+      23,
+      9,
+      6,
+      21,
+      5,
+      14,
+      3,
+      12,
+      29,
+      26,
+      27,
+      25,
+      24,
+      27,
+      26,
+      28,
+      26,
+      27,
+      24,
+      25,
+      25,
+      27,
+      26,
+      27,
+      28,
+      29,
+      24,
+      25,
+      26,
+      24,
+      29,
+      28,
+      27,
+      30,
+      24,
+      28,
+      29,
+      30,
+      28,
+      29,
+      27,
+      26,
+      25,
+      27,
+      24,
+      29,
+      27,
+      25,
+      26,
+      25,
+      27,
+      26,
+      27,
+      24,
+      27,
+      26,
+      30,
+      26,
+      27,
+      27,
+      26,
+      29,
+      25,
+      27,
+      26,
+      29,
+      30,
+      29,
+      26,
+      27,
+      26,
+      27,
+      29,
+      32,
+      32,
+      32,
+      31,
+      31,
+      31,
+      31,
+      31,
+      32,
+      33,
+      32,
+      33,
+      32
+    ],
+    "value": [
+      6,
+      4,
+      5,
+      4,
+      5,
+      4,
+      3,
+      3,
+      3,
+      3,
+      8,
+      3,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      4,
+      3,
+      2,
+      2,
+      2,
+      1,
+      3,
+      3,
+      2,
+      1,
+      1,
+      4,
+      3,
+      1,
+      2,
+      3,
+      2,
+      1,
+      4,
+      6,
+      2,
+      1,
+      2,
+      1,
+      2,
+      1,
+      1,
+      2,
+      1,
+      1,
+      2,
+      2,
+      1,
+      1,
+      2,
+      1,
+      3,
+      1,
+      1,
+      2,
+      2,
+      6,
+      2,
+      2,
+      2,
+      1,
+      2,
+      1,
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      2,
+      1,
+      3,
+      2,
+      1,
+      1,
+      1,
+      1,
+      2,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1,
+      2,
+      1,
+      12,
+      9,
+      5,
+      35,
+      12,
+      10,
+      14,
+      4,
+      4,
+      6,
+      1,
+      2,
+      1
+    ]
+  }
+};
+
+            // Define colors for nodes
+            const nodeColors = {
+                'FH': '#94a3b8',
+                'E': '#94a3b8',
+                'V': '#94a3b8',
+                'A: Information Fragmentation': '#4b70f6',
+                'B: Siloed Work': '#d82455',
+                'C: Reactive Management': '#febe00',
+                'D: Missing Guardrails': '#04005c',
+                'E: Knowledge Not Captured': '#8b5cf6',
+                'F: Capacity Constraints': '#10b981',
+                'None': '#cbd5e1',
+                'Direct': '#10b981',
+                'Indirect': '#febe00',
+                'Unrelated': '#94a3b8'
+            };
+
+            // Assign colors
+            const colors = sankeyData.nodes.map((node, idx) => {
+                // Exact matches for specific nodes
+                if (nodeColors[node]) {
+                    return nodeColors[node];
+                }
+                // Category nodes (indices 3-23) get light gray
+                // Dimensions (24-29) and addressability (31-33) already handled above
+                return '#e0e7f4';
+            });
+
+            // Store original link colors
+            const originalLinkColors = sankeyData.links.source.map(idx => {
+                const color = colors[idx];
+                if (color.startsWith('#')) {
+                    return color + '40';
+                }
+                return color.replace(')', ', 0.25)').replace('rgb', 'rgba');
+            });
+
+            // Build graph of upstream connections for each dimension
+            const dimensionIndices = [24, 25, 26, 27, 28, 29]; // A, B, C, D, E, F indices
+            
+            function findUpstreamLinks(targetNodeIdx) {
+                const upstreamLinks = new Set();
+                const nodesToCheck = [targetNodeIdx];
+                const checkedNodes = new Set();
+
+                while (nodesToCheck.length > 0) {
+                    const currentNode = nodesToCheck.pop();
+                    if (checkedNodes.has(currentNode)) continue;
+                    checkedNodes.add(currentNode);
+
+                    // Find all links that target this node
+                    sankeyData.links.target.forEach((target, linkIdx) => {
+                        if (target === currentNode) {
+                            upstreamLinks.add(linkIdx);
+                            // Add the source node to check its upstream connections
+                            const sourceNode = sankeyData.links.source[linkIdx];
+                            if (!checkedNodes.has(sourceNode)) {
+                                nodesToCheck.push(sourceNode);
+                            }
+                        }
+                    });
+                }
+
+                return upstreamLinks;
+            }
+
+            // Pre-calculate upstream links for each dimension
+            const dimensionUpstreamLinks = {};
+            dimensionIndices.forEach(dimIdx => {
+                dimensionUpstreamLinks[dimIdx] = findUpstreamLinks(dimIdx);
+            });
+
+            // Create display labels - hide project labels since we'll use annotations
+            const nodeLabels = sankeyData.nodes.map((node, idx) => {
+                // Hide labels for project nodes (indices 0, 1, 2)
+                if (idx <= 2) {
+                    return '';
+                }
+                return node;
+            });
+
+            // Set explicit x and y positions for project nodes to align with annotations
+            // Use more extreme spacing to match annotation positions
+            const nodeX = sankeyData.nodes.map((node, idx) => {
+                if (idx === 0) return 0.001;  // FH - leftmost
+                if (idx === 1) return 0.001;  // E - leftmost
+                if (idx === 2) return 0.001;  // V - leftmost
+                return null;  // Let Plotly position the rest
+            });
+
+            const nodeY = sankeyData.nodes.map((node, idx) => {
+                if (idx === 0) return 0.90;  // FH - top (higher)
+                if (idx === 1) return 0.50;  // E - middle
+                if (idx === 2) return 0.10;  // V - bottom (lower)
+                return null;  // Let Plotly position the rest
+            });
+
+            const data = [{
+                type: "sankey",
+                orientation: "h",
+                arrangement: "snap",
+                node: {
+                    pad: 20,
+                    thickness: 25,
+                    line: {
+                        color: "white",
+                        width: 2
+                    },
+                    label: nodeLabels,
+                    color: colors,
+                    x: nodeX,
+                    y: nodeY,
+                    customdata: sankeyData.nodes,
+                    hovertemplate: '<b>%{customdata}</b><br>Total Issues: %{value}<extra></extra>'
+                },
+                link: {
+                    source: sankeyData.links.source,
+                    target: sankeyData.links.target,
+                    value: sankeyData.links.value,
+                    color: originalLinkColors,
+                    customdata: sankeyData.links.source.map((src, idx) => ({
+                        source: sankeyData.nodes[src],
+                        target: sankeyData.nodes[sankeyData.links.target[idx]]
+                    })),
+                    hovertemplate: '%{customdata.source} → %{customdata.target}<br>Issues: %{value}<extra></extra>'
+                }
+            }];
+
+            const layout = {
+                font: {
+                    size: 11,
+                    family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                },
+                height: 700,
+                margin: {
+                    l: 80,
+                    r: 140,
+                    t: 20,
+                    b: 20
+                },
+                annotations: [
+                    {
+                        x: -0.02,
+                        y: 0.90,
+                        xref: 'paper',
+                        yref: 'paper',
+                        text: 'Project FH',
+                        showarrow: false,
+                        textangle: -90,
+                        font: {
+                            size: 11,
+                            color: '#1a1a1a'
+                        },
+                        xanchor: 'center',
+                        yanchor: 'middle'
+                    },
+                    {
+                        x: -0.02,
+                        y: 0.50,
+                        xref: 'paper',
+                        yref: 'paper',
+                        text: 'Project E',
+                        showarrow: false,
+                        textangle: -90,
+                        font: {
+                            size: 11,
+                            color: '#1a1a1a'
+                        },
+                        xanchor: 'center',
+                        yanchor: 'middle'
+                    },
+                    {
+                        x: -0.02,
+                        y: 0.10,
+                        xref: 'paper',
+                        yref: 'paper',
+                        text: 'Project V',
+                        showarrow: false,
+                        textangle: -90,
+                        font: {
+                            size: 11,
+                            color: '#1a1a1a'
+                        },
+                        xanchor: 'center',
+                        yanchor: 'middle'
+                    }
+                ]
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d']
+            };
+
+            Plotly.newPlot('sankey', data, layout, config);
+
+            // Add hover event handlers for dimension highlighting
+            const plotDiv = document.getElementById('sankey');
+            
+            plotDiv.on('plotly_hover', function(eventData) {
+                const point = eventData.points[0];
+                
+                // Check if hovering over a dimension node (indices 24-29)
+                // point.pointNumber refers to the node index in the Sankey
+                const nodeIndex = point.pointNumber;
+                
+                if (nodeIndex >= 24 && nodeIndex <= 29) {
+                    const dimIdx = nodeIndex;
+                    const dimColor = colors[dimIdx];
+                    const upstreamLinks = dimensionUpstreamLinks[dimIdx];
+                    
+                    // Create new link colors with highlighted upstream paths
+                    const newLinkColors = originalLinkColors.map((color, idx) => {
+                        if (upstreamLinks.has(idx)) {
+                            // Highlight this link with dimension color
+                            if (dimColor.startsWith('#')) {
+                                return dimColor + 'CC'; // 80% opacity
+                            }
+                            return dimColor.replace(')', ', 0.8)').replace('rgb', 'rgba');
+                        }
+                        // Fade other links more
+                        return color.replace('40', '20'); // Even more transparent
+                    });
+
+                    Plotly.restyle('sankey', {'link.color': [newLinkColors]});
+                }
+            });
+
+            plotDiv.on('plotly_unhover', function() {
+                // Reset to original colors
+                Plotly.restyle('sankey', {'link.color': [originalLinkColors]});
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeSankey);
+        } else {
+            initializeSankey();
+        }
+    </script>
+</body>
+</html>
