@@ -1,0 +1,400 @@
+{
+  "simulation": true,
+  "cases": [
+    {
+      "id": "E1",
+      "request": "Show Urgent then Normal then Low, followed by unfamiliar priorities, then blank priorities. Within each rank use earliest due date, blanks last, then Title then public ID. Keep unrelated views as they are. Reuse Rank if it works. What order do we get now and after t5 changes to Urgent?",
+      "artifacts": {
+        "existingRank": {
+          "expression": "Urgent=1, Normal=2, Low=3, other=4, blank=5",
+          "enabled": true
+        },
+        "viewSortFieldMustBeVisible": true,
+        "rows": [
+          {
+            "id": "t1",
+            "Title": "B",
+            "Priority": "Normal",
+            "Due": "2026-10-11"
+          },
+          {
+            "id": "t2",
+            "Title": "B",
+            "Priority": "Urgent",
+            "Due": "2026-10-10"
+          },
+          {
+            "id": "t3",
+            "Title": "A",
+            "Priority": "Urgent",
+            "Due": "2026-10-10"
+          },
+          {
+            "id": "t4",
+            "Title": "C",
+            "Priority": "Low",
+            "Due": null
+          },
+          {
+            "id": "t5",
+            "Title": "D",
+            "Priority": "Later",
+            "Due": "2026-10-09"
+          },
+          {
+            "id": "t6",
+            "Title": "E",
+            "Priority": null,
+            "Due": "2026-10-08"
+          },
+          {
+            "id": "t7",
+            "Title": "A",
+            "Priority": "Normal",
+            "Due": "2026-10-11"
+          }
+        ],
+        "selectOptionOrder": [
+          "Low",
+          "Normal",
+          "Urgent"
+        ]
+      }
+    },
+    {
+      "id": "E2",
+      "request": "Create a view of open items owned by Team A, plus all critical items. Sort by ID. The returned view omits the Owner field. Show the exact expected IDs and how you would verify it.",
+      "artifacts": {
+        "sourceRows": [
+          {
+            "id": "f1",
+            "State": "Open",
+            "Owner": "Team A",
+            "Critical": false
+          },
+          {
+            "id": "f2",
+            "State": "Closed",
+            "Owner": "Team A",
+            "Critical": false
+          },
+          {
+            "id": "f3",
+            "State": "Open",
+            "Owner": "Team B",
+            "Critical": false
+          },
+          {
+            "id": "f4",
+            "State": "Closed",
+            "Owner": "Team B",
+            "Critical": true
+          },
+          {
+            "id": "f5",
+            "State": "Open",
+            "Owner": "Team A",
+            "Critical": true
+          }
+        ],
+        "candidateViewRows": [
+          {
+            "id": "f1"
+          },
+          {
+            "id": "f2"
+          },
+          {
+            "id": "f3"
+          },
+          {
+            "id": "f4"
+          },
+          {
+            "id": "f5"
+          }
+        ],
+        "savedFilterGroups": [
+          {
+            "field": "State",
+            "value": "Open",
+            "orGroup": 0
+          },
+          {
+            "field": "Owner",
+            "value": "Team A",
+            "orGroup": 1
+          },
+          {
+            "field": "Critical",
+            "value": true,
+            "orGroup": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "E3",
+      "request": "Add the supplier shortlist table to this document. It should show only shortlisted suppliers, Name and Rating, in descending Rating order. You may create a view if necessary.",
+      "artifacts": {
+        "tableId": "fixture-suppliers",
+        "existingViews": [
+          {
+            "id": "v-shortlist-name",
+            "name": "Shortlist",
+            "rows": [
+              "a",
+              "b",
+              "c"
+            ],
+            "columns": [
+              "Name",
+              "Rating"
+            ],
+            "sort": "Rating descending"
+          },
+          {
+            "id": "v-review",
+            "name": "Review",
+            "rows": [
+              "b",
+              "c"
+            ],
+            "columns": [
+              "Name",
+              "Rating"
+            ],
+            "sort": "Rating descending"
+          }
+        ],
+        "sourceRows": [
+          {
+            "id": "a",
+            "shortlisted": false
+          },
+          {
+            "id": "b",
+            "shortlisted": true
+          },
+          {
+            "id": "c",
+            "shortlisted": true
+          }
+        ],
+        "documentResponse": {
+          "type": "Table",
+          "tableId": null,
+          "viewId": null
+        }
+      }
+    },
+    {
+      "id": "E4",
+      "request": "Convert Resources from links to text, formatted 'label — URL'. Preserve all cell contents and other fields. The tool has just returned the post-conversion data shown below. Finish and verify the conversion before retiring the old field.",
+      "artifacts": {
+        "before": [
+          {
+            "id": "c1",
+            "Resources": {
+              "label": "Guide",
+              "url": "https://example.org/guide"
+            },
+            "Notes": "keep A"
+          },
+          {
+            "id": "c2",
+            "Resources": {
+              "label": "Spec",
+              "url": "https://example.org/spec"
+            },
+            "Notes": "keep B"
+          },
+          {
+            "id": "c3",
+            "Resources": null,
+            "Notes": "keep C"
+          }
+        ],
+        "after": [
+          {
+            "id": "c1",
+            "Resources": "Guide — https://example.org/guide",
+            "Notes": "keep A"
+          },
+          {
+            "id": "c2",
+            "Resources": null,
+            "Notes": "keep B"
+          },
+          {
+            "id": "c3",
+            "Resources": null,
+            "Notes": "keep C"
+          }
+        ],
+        "oldFieldRetired": false
+      }
+    },
+    {
+      "id": "E5",
+      "request": "Only change this view's visible column order. The update returned these physical definitions. Decide whether it is finished and what remains.",
+      "artifacts": {
+        "physicalBefore": {
+          "Score": {
+            "kind": "text",
+            "formula": null,
+            "formulaEnabled": false,
+            "script": null,
+            "scriptEnabled": false,
+            "validation": [],
+            "relationship": null
+          }
+        },
+        "physicalAfter": {
+          "Score": {
+            "kind": "text",
+            "formula": "=EMPTY()",
+            "formulaEnabled": false,
+            "script": "return null",
+            "scriptEnabled": false,
+            "validation": [],
+            "relationship": null
+          }
+        },
+        "viewOrderCorrect": true,
+        "rowsUnchanged": true
+      }
+    },
+    {
+      "id": "E6",
+      "request": "Set the Description column width to 420 in the review view only. The first update and the focused correction produced these observations.",
+      "artifacts": {
+        "baseline": {
+          "reviewWidth": 200,
+          "otherViewWidth": 280,
+          "physicalWidth": 200
+        },
+        "afterFullUpdate": {
+          "reviewWidth": 200,
+          "otherViewWidth": 280,
+          "physicalWidth": 200
+        },
+        "afterFocusedUpdate": {
+          "reviewWidth": 420,
+          "otherViewWidth": 420,
+          "physicalWidth": 420
+        },
+        "availableSyncSettings": {
+          "keepColoursInSync": true
+        },
+        "currentEndpointWidthIsolation": "unverified",
+        "otherViewRedesignAuthorised": false
+      }
+    },
+    {
+      "id": "E7",
+      "request": "Retire view old-view. Keep the main handbook working by rebinding it to replacement-view. The old campaign page is obsolete: remove its table and slicer controls only, preserving its other content.",
+      "artifacts": {
+        "firstDeleteResult": {
+          "status": 422,
+          "message": "resource_in_use"
+        },
+        "consumers": [
+          {
+            "document": "handbook",
+            "kind": "native-table-response",
+            "view": "old-view"
+          },
+          {
+            "document": "campaign",
+            "kind": "TABLE",
+            "view": "old-view"
+          },
+          {
+            "document": "campaign",
+            "kind": "SLICER",
+            "view": "old-view"
+          },
+          {
+            "document": "campaign",
+            "kind": "text",
+            "text": "Retain the retrospective."
+          }
+        ],
+        "replacement": {
+          "id": "replacement-view",
+          "equivalentMembership": true
+        },
+        "usageScanComplete": true
+      }
+    },
+    {
+      "id": "E8",
+      "request": "Make a new review spreadsheet and document in this hub, keeping its established layout.",
+      "artifacts": {
+        "adoptedRules": {
+          "newReviewRows": "Tall",
+          "defaultViewSort": "Name ascending",
+          "documentSections": "collapsed for reference pages",
+          "tableLayout": "narrative and table together when needed"
+        },
+        "newDocumentPurpose": "Reference / Library",
+        "renderPermission": false
+      }
+    },
+    {
+      "id": "E9",
+      "request": "Design a single hub containing day-to-day actions, a technical reference library and a monitoring dashboard. Keep one short introduction, but explain unfamiliar reference terms where useful.",
+      "artifacts": {
+        "existingDocuments": [
+          "Home",
+          "Actions",
+          "Library",
+          "Monitoring"
+        ],
+        "createTaxonomyColumnRequested": false,
+        "sharedTable": "existing register",
+        "viewPermission": "can create relevant views",
+        "uiControlPermission": false
+      }
+    },
+    {
+      "id": "E10",
+      "request": "You were creating a view for overdue work, but the response timed out. Continue safely from this evidence.",
+      "artifacts": {
+        "createResponse": {
+          "timeout": true,
+          "returnedId": "new-view-17"
+        },
+        "freshRead": {
+          "id": "new-view-17",
+          "name": "Overdue",
+          "filter": {
+            "DueBefore": "2026-10-09",
+            "Done": false
+          },
+          "rowHeight": "Medium"
+        },
+        "intendedName": "Overdue",
+        "intendedFilter": {
+          "DueBefore": "2026-10-09",
+          "Done": false
+        },
+        "originalTable": "fixture-work"
+      }
+    },
+    {
+      "id": "E11",
+      "request": "Move a linked source row to the top of its table. The local guide includes a historical workaround, but the current connector exposes only partial-row updates and there is no verified relationship-preserving reorder operation.",
+      "artifacts": {
+        "sourceRow": "source-3",
+        "linkedConsumers": [
+          "target-1",
+          "target-2"
+        ],
+        "testedAlternative": "view sorting supported",
+        "contentEditRequested": false
+      }
+    }
+  ]
+}
