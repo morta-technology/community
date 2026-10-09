@@ -1,0 +1,102 @@
+{
+  "version": "0.5.0",
+  "status": "test-candidate",
+  "distribution": "community; reviewed instructions plus repository MIT notice",
+  "archive": "morta-agent-v0.5.0.zip",
+  "sha256": "cd32d73b171063d030ee6d9b971f8693baa1c2f22034ce7182b78bd07e43d1d2",
+  "files": [
+    {
+      "path": "morta-agent/assets/hub-ai-instructions.md",
+      "sha256": "5176c764fbad3847c4aa4039d76481afc84b0f26933699db8f3267b5eaf3e867"
+    },
+    {
+      "path": "morta-agent/LICENSE",
+      "sha256": "b8078f3b3ac87cb72cc03c6afac1c1ed2bec42cb2c60c931ef2b0efa04f215a5"
+    },
+    {
+      "path": "morta-agent/references/data-model.md",
+      "sha256": "7b004d1c96fde915865176c79144dfbeee23fa2a6d01c6e30be4996ec7b75dd0"
+    },
+    {
+      "path": "morta-agent/references/design-patterns.md",
+      "sha256": "1dcc5a774bfa87705174cd63ad79ccbe71b031f44279dfc1f8371e50fbcc8dce"
+    },
+    {
+      "path": "morta-agent/references/documents.md",
+      "sha256": "977d3771401591b4355a07f44b819cd064283e6fb400b0f19e15ab1f28fa0b7b"
+    },
+    {
+      "path": "morta-agent/references/forms-workflows.md",
+      "sha256": "874e011bc79b943dc7e1a987a547e195069591daf8b9f7593333e6a27393f413"
+    },
+    {
+      "path": "morta-agent/references/hub-rules.md",
+      "sha256": "a939fb05d9ef880a24b21169c185a6756a6e7863668334ee5d8486c88934ae3d"
+    },
+    {
+      "path": "morta-agent/references/imports-migrations.md",
+      "sha256": "6b5dc912fa619a4b4a39fbb3299db309960f055c4788373bab55188655e99a8f"
+    },
+    {
+      "path": "morta-agent/references/morta-practice.md",
+      "sha256": "41126997a7f907e3488e8b60341e5fbbbc5d179c12e0d398341d7761a66ccba0"
+    },
+    {
+      "path": "morta-agent/references/presentation.md",
+      "sha256": "87c9062960d63e64c89af76f91db602c3d25412d99512f5e891db2561c78b78d"
+    },
+    {
+      "path": "morta-agent/references/setup.md",
+      "sha256": "f8d4677a047de925dd0076051f31f06e3624796929e46cec9ba342855746d4e9"
+    },
+    {
+      "path": "morta-agent/references/sharing.md",
+      "sha256": "6a02d42f429f18cc50c780bc33ec1a8531570de07db24cf370da3845ba4f04e6"
+    },
+    {
+      "path": "morta-agent/SKILL.md",
+      "sha256": "b3740823b46792408f261d53656092b0872ef837b8525eb9d0caa5b515dde66d"
+    }
+  ],
+  "support_files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "1f188a384f3a7d8e293f83c43a896957fff3e9ff9fc3f752e6d78825f92f65ec"
+    },
+    {
+      "path": "build.py",
+      "sha256": "1ca3303eddf685c299ce93035dc24b5d56680db982283f9de28b10bcf2c6bcce"
+    },
+    {
+      "path": "README.md",
+      "sha256": "2b1bd4d709eca690d113ba683ea728b47eb3645363b7a2944cd61c937b5caf53"
+    },
+    {
+      "path": "START-HERE.md",
+      "sha256": "bb2b6d4ff3c7b50e6984c66fbb56ae3b851d26b5d3204eacf73ef2383b1e4571"
+    },
+    {
+      "path": "TESTING.md",
+      "sha256": "bd9e1e401b58fe97e2cd8d9c850f321854463cdd8f6efe7f78845c0d96dc54b2"
+    },
+    {
+      "path": "tests/editing-scenarios.json",
+      "sha256": "81f3a7847d606bbd7aac84e4dca6190bf9d0ef061c4c869fb99de68fc12150fb"
+    },
+    {
+      "path": "tests/evaluation-summary.json",
+      "sha256": "13390aba42d49bdb60ee4278b3f8839c6ebf90c78c4cee57c3f255efc9f3b8fc"
+    },
+    {
+      "path": "tests/setup-scenarios.json",
+      "sha256": "51203c60c5d88d4af68647380086296586303cb1fc216542f727165a61f3b492"
+    }
+  ],
+  "validation": {
+    "structural": "links, configuration syntax, license, ZIP integrity and content equality",
+    "behavioural": "Original 21-case result in tests/evaluation-summary.json; not rerun by this script",
+    "live_connector": "not tested",
+    "claude_installation": "not performed",
+    "visual_verification": "not performed"
+  }
+}

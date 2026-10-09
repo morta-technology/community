@@ -1,0 +1,217 @@
+{
+  "version": "0.5.0",
+  "evaluated_at": "2026-10-09T09:39:13.984544+00:00",
+  "method": "Parent semantic review of all 21 fresh-context dry-run cases, with independent calculations for E1, E2 and S9.",
+  "passed": 21,
+  "failed": 0,
+  "cases": [
+    {
+      "id": "S1",
+      "verdict": "pass",
+      "evidence": "Correct Claude enable/upload/version/connect/first-read guidance; preserves existing connector and private credential handling; no installation claim."
+    },
+    {
+      "id": "S2",
+      "verdict": "pass",
+      "evidence": "Chooses one user installation, preserves custom date preference and working connection, backs up outside discovery and reconciles duplicate repository installation."
+    },
+    {
+      "id": "S3",
+      "verdict": "pass",
+      "evidence": "Uses direct table evidence without hub inventory; retains denied policy access and unavailable identity/write capability as unresolved rather than broadening access."
+    },
+    {
+      "id": "S4",
+      "verdict": "pass",
+      "evidence": "Selects adopted governing document; newer draft and ordinary row text cannot replace policy."
+    },
+    {
+      "id": "S5",
+      "verdict": "pass",
+      "evidence": "Separates review from later authorised application; exact spelling change uses existing delegation without redundant approval and preserves access policy."
+    },
+    {
+      "id": "S6",
+      "verdict": "pass",
+      "evidence": "Preserves durable Notes and avoids invented log fields; presentation inspection/readback separate from rendering."
+    },
+    {
+      "id": "S7",
+      "verdict": "pass",
+      "evidence": "Authorised table-only sharing prepared; missing permission capability reported; no broad grant or filtered-view security claim."
+    },
+    {
+      "id": "S8",
+      "verdict": "pass",
+      "evidence": "Prepares approved future-event rule; no manual update represented as automation and no unsolicited external service; missing configuration capability explicit."
+    },
+    {
+      "id": "S9",
+      "verdict": "pass",
+      "evidence": "Both pages, six distinct rows, four open requests, GBP 200 known subtotal and one unknown estimate reconciled with source/as-of reference."
+    },
+    {
+      "id": "S10",
+      "verdict": "pass",
+      "evidence": "Separates absent connector operation, explicit 403 denial and ambiguous unavailable error; no credential changes."
+    },
+    {
+      "id": "E1",
+      "verdict": "pass",
+      "evidence": "Existing rank reused; unfamiliar and blank priorities, due-date ties and title tie-breaks calculated correctly before and after value change; helper visibility and live recalculation limits retained."
+    },
+    {
+      "id": "E2",
+      "verdict": "pass",
+      "evidence": "Correct grouped AND/OR membership and hidden-field verification; incorrect union recognised."
+    },
+    {
+      "id": "E3",
+      "verdict": "pass",
+      "evidence": "Selects candidate by actual rows/fields rather than name; requires missing rating/filter evidence and exact native binding without duplicating a view."
+    },
+    {
+      "id": "E4",
+      "verdict": "pass",
+      "evidence": "Detects lost converted value, restores only affected cell and preserves structured labels/URLs, blanks and unrelated Notes before retirement."
+    },
+    {
+      "id": "E5",
+      "verdict": "pass",
+      "evidence": "Detects physical formula/script insertion despite correct view order and unchanged rows; scoped recovery and readback required."
+    },
+    {
+      "id": "E6",
+      "verdict": "pass",
+      "evidence": "Distinguishes ignored width update and unintended propagation; no colour-sync inference or blind recovery; scoped isolation remains unresolved."
+    },
+    {
+      "id": "E7",
+      "verdict": "pass",
+      "evidence": "Rebinds native consumer, removes only authorised obsolete TABLE/SLICER controls, preserves surrounding text, rescans before retirement."
+    },
+    {
+      "id": "E8",
+      "verdict": "pass",
+      "evidence": "Hub-specific Tall rows, sorted Default, collapsed sections and mixed narrative/table layout override fallback defaults."
+    },
+    {
+      "id": "E9",
+      "verdict": "pass",
+      "evidence": "Combines design patterns using existing documents and source register, without mandatory pages or taxonomy fields."
+    },
+    {
+      "id": "E10",
+      "verdict": "pass",
+      "evidence": "Reconciles returned creation ID after timeout; avoids duplicate create and requires parent binding and actual membership evidence."
+    },
+    {
+      "id": "E11",
+      "verdict": "pass",
+      "evidence": "Rejects unverified physical row-move path while preserving relationships; view-sort alternative correctly distinguished from requested physical move."
+    }
+  ],
+  "independent_calculations": {
+    "initial_order": [
+      "t3",
+      "t2",
+      "t7",
+      "t1",
+      "t4",
+      "t5",
+      "t6"
+    ],
+    "changed_order": [
+      "t5",
+      "t3",
+      "t2",
+      "t7",
+      "t1",
+      "t4",
+      "t6"
+    ],
+    "filter_membership": [
+      "f1",
+      "f4",
+      "f5"
+    ],
+    "report_open_count": 4,
+    "report_known_subtotal": 200,
+    "report_unknown_count": 1
+  },
+  "limitations": [
+    "Synthetic decision scenarios, no live connector execution or resource writes.",
+    "No actual Claude installation, new Codex installation, visual inspection or human acceptance.",
+    "E1 calculates rank/date ties resolved by Title; its supplied rows do not exercise an identical Title/date tie resolved solely by public ID.",
+    "A single run per scenario is not a statistical reliability assessment."
+  ],
+  "independent_review": {
+    "method": "ECC skill-stocktake review in a separate fresh-context agent; no forward-test results supplied",
+    "verdict": "Keep",
+    "findings": [],
+    "included": "All 12 instruction files, including the generic hub-instructions template",
+    "not_tested": "Host installation, live connector execution, live Morta changes, rendering or human acceptance",
+    "reviewed_files": [
+      {
+        "path": "assets/hub-ai-instructions.md",
+        "sha256": "5176c764fbad3847c4aa4039d76481afc84b0f26933699db8f3267b5eaf3e867",
+        "lines": 92
+      },
+      {
+        "path": "references/data-model.md",
+        "sha256": "7b004d1c96fde915865176c79144dfbeee23fa2a6d01c6e30be4996ec7b75dd0",
+        "lines": 65
+      },
+      {
+        "path": "references/design-patterns.md",
+        "sha256": "1dcc5a774bfa87705174cd63ad79ccbe71b031f44279dfc1f8371e50fbcc8dce",
+        "lines": 25
+      },
+      {
+        "path": "references/documents.md",
+        "sha256": "977d3771401591b4355a07f44b819cd064283e6fb400b0f19e15ab1f28fa0b7b",
+        "lines": 41
+      },
+      {
+        "path": "references/forms-workflows.md",
+        "sha256": "874e011bc79b943dc7e1a987a547e195069591daf8b9f7593333e6a27393f413",
+        "lines": 41
+      },
+      {
+        "path": "references/hub-rules.md",
+        "sha256": "a939fb05d9ef880a24b21169c185a6756a6e7863668334ee5d8486c88934ae3d",
+        "lines": 62
+      },
+      {
+        "path": "references/imports-migrations.md",
+        "sha256": "6b5dc912fa619a4b4a39fbb3299db309960f055c4788373bab55188655e99a8f",
+        "lines": 51
+      },
+      {
+        "path": "references/morta-practice.md",
+        "sha256": "41126997a7f907e3488e8b60341e5fbbbc5d179c12e0d398341d7761a66ccba0",
+        "lines": 43
+      },
+      {
+        "path": "references/presentation.md",
+        "sha256": "87c9062960d63e64c89af76f91db602c3d25412d99512f5e891db2561c78b78d",
+        "lines": 74
+      },
+      {
+        "path": "references/setup.md",
+        "sha256": "f8d4677a047de925dd0076051f31f06e3624796929e46cec9ba342855746d4e9",
+        "lines": 127
+      },
+      {
+        "path": "references/sharing.md",
+        "sha256": "6a02d42f429f18cc50c780bc33ec1a8531570de07db24cf370da3845ba4f04e6",
+        "lines": 27
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "b3740823b46792408f261d53656092b0872ef837b8525eb9d0caa5b515dde66d",
+        "lines": 61
+      }
+    ]
+  }
+}
