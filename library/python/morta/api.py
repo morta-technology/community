@@ -156,8 +156,56 @@ def get_document_pdf(document_id: str, api_key: str = None) -> str:
     return response.content
 
 
-def create_document(project_id: str, name: str, document_type: str = "", api_key: str = None) -> dict:
-    params = {"name": name, "type": document_type, "projectId": project_id}
+def _warn_type_ignored(function_name: str, argument: str) -> None:
+    print(
+        f"{function_name}: {argument} is no longer used and was ignored. Morta replaced document and table types "
+        f"with hub folders: pass folder_id instead (see get_hub_folders and create_hub_folder)."
+    )
+
+
+# returns the hub's folders as a flat list, in sidebar order: [{"publicId": ..., "name": ..., "parentId": ...}, ...]
+def get_hub_folders(project_id: str, api_key: str = None) -> list:
+    response = api_call("GET", f"/v1/hub/{project_id}", api_key=api_key)
+    print(
+        f"get hub folders: {project_id}, "
+        f"response: {str(response.status_code)}, duration: {str(response.elapsed.total_seconds())}"
+    )
+    return response.json()["data"]["hubFolders"]
+
+
+# creates a folder in the hub (hub Owners only); parent_id = the folder to create it in, omit for the top level
+def create_hub_folder(project_id: str, name: str, parent_id: str = None, api_key: str = None) -> dict:
+    params = {"name": name, "parentId": parent_id}
+    response = api_call("POST", f"/v1/hub/{project_id}/folders", params, api_key=api_key)
+    print(
+        f"create hub folder: {name}, in project: {project_id}, "
+        f"response: {str(response.status_code)}, duration: {str(response.elapsed.total_seconds())}"
+    )
+    return response.json()["data"]
+
+
+# moves documents and tables into a folder; folder_id = None moves them to the hub's top level
+# items = [{"kind": "document", "id": "<document id>"}, {"kind": "table", "id": "<table id>"}]
+def move_to_folder(project_id: str, items: list, folder_id: str = None, api_key: str = None) -> dict:
+    params = {"items": items, "parentFolderId": folder_id}
+    response = api_call("POST", f"/v1/hub/{project_id}/folders/move", params, api_key=api_key)
+    print(
+        f"move {len(items)} items to folder: {folder_id}, in project: {project_id}, "
+        f"response: {str(response.status_code)}, duration: {str(response.elapsed.total_seconds())}"
+    )
+    return response.json()["data"]
+
+
+# folder_id (optional) = the id of the hub folder to create the document in; omit it for the hub's top level.
+# document_type is no longer used: Morta replaced document types with hub folders, so pass folder_id instead.
+def create_document(
+    project_id: str, name: str, document_type: str = "", api_key: str = None, folder_id: str = None
+) -> dict:
+    if document_type:
+        _warn_type_ignored("create_document", "document_type")
+    params = {"name": name, "projectId": project_id}
+    if folder_id:
+        params["folderId"] = folder_id
     response = api_call("POST", "/v1/process", params=params, api_key=api_key)
     print(
         f"create document in project: {project_id}, "
@@ -201,7 +249,8 @@ def duplicate_document_async(
 
 
 # takes document_id, and params
-# params = {"name": "xxx", "type": "xxx","description": "xxx", "logo": "xxx"}
+# params = {"name": "xxx", "description": "xxx", "logo": "xxx"}
+# to move a document into a folder, use move_to_folder
 # no return
 def update_document(document_id: str, params: dict, api_key: str = None) -> dict:
     response = api_call("PUT", f"/v1/process/{document_id}", params, api_key=api_key)
@@ -490,10 +539,16 @@ def get_table_csv(table_id: str, api_key: str = None) -> str:
 #    table_columns = [{"name":"col1", "kind": "text", "width": 100}]
 # creates a table with given params
 # returns json {'data': {}, 'metadata': {}}
-def create_table(project_id: str, name: str, columns: list, api_key: str = None, table_type: str = None) -> dict:
-    params = {"projectId": project_id, "name": name, "columns": columns}
+# folder_id (optional) = the id of the hub folder to create the table in; omit it for the hub's top level.
+# table_type is no longer used: Morta replaced table types with hub folders, so pass folder_id instead.
+def create_table(
+    project_id: str, name: str, columns: list, api_key: str = None, table_type: str = None, folder_id: str = None
+) -> dict:
     if table_type:
-        params["type"] = table_type
+        _warn_type_ignored("create_table", "table_type")
+    params = {"projectId": project_id, "name": name, "columns": columns}
+    if folder_id:
+        params["folderId"] = folder_id
     response = api_call("POST", "/v1/table", params, api_key=api_key)
     print(
         f"create morta table: {name}, in project: {project_id}, "
@@ -503,6 +558,7 @@ def create_table(project_id: str, name: str, columns: list, api_key: str = None,
 
 
 # takes table_id, params : {"name": "some name here"}
+# to move a table into a folder, use move_to_folder
 # no return
 def update_table(table_id: str, params: dict, api_key: str = None) -> dict:
     response = api_call("PUT", f"/v1/table/{table_id}", params, api_key=api_key)
